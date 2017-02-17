@@ -1,24 +1,5 @@
-# README
+Do I need to be serious in README file?
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Meal ordering coordination system
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+After doing some research i decided to use React as javascript framework and probably doorkeeper gem to implement oauth.
