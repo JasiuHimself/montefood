@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  root "api/orders#index" #potem można wywalić
+  get 'welcome/index'
+
+  root 'welcome#index'
+  # root "api/orders#index" #potem można wywalić
 
   namespace :api do
     resources :orders, only: :index
