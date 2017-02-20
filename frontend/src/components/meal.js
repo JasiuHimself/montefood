@@ -1,21 +1,37 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
 
-class Meal extends Component {
-  componentDidMount(){
-    $.ajax({
-      url: "api/orders",
-    }).done(function(result) {
-      this.setState({result: result.data})
-    });
 
-  }
+// do mealsów tylko ID ORDERU I W ŚRODKU ITERUJĘ PO MEALACH WŁAŚNIE
+
+class Meal extends Component {
+  // componentDidMount(){
+  //   $.ajax({
+  //     url: "api/meal",
+  //   }).done(function(result) {
+  //     this.setState({result: result.data})
+  //   });
+  //
+  // }
+  // 
+  // _getMeals(){
+  //   $.ajax({
+  //     url: "api/meal",
+  //   }).done(function(result){
+  //       this.setState({result: result.data})
+  //     });
+  //
+  //
+  // }
+
+
+
 
 
   render() {
     return (
       <li className="meal">
-        delicious meal
+        one given meal
       </li>
     );
   }
