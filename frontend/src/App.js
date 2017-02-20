@@ -20,23 +20,14 @@ class App extends Component {
             type : 'GET',
             url: 'api/orders',
             dataType: 'json',
-            success: (res_orders)=>{
-              res_orders.map((order)=>{
+            success: (rec_orders)=>{
+              rec_orders.map((order)=>{
               return this.setState({orders: this.state.orders.concat(order)})
               })
             }
-          }),
-
-          $.ajax({
-            type : 'GET',
-            url: 'api/meals',
-            dataType: 'json',
-            success: (res_meals)=>{
-              res_meals.map((meal)=>{
-              return this.setState({meals: this.state.orders.concat(meal)})
-              })
-            }
           })
+
+
 
 
         )
