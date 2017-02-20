@@ -15,38 +15,66 @@ class App extends Component {
   }
 
     componentWillMount(){
-          var appThis = this;
+      return(
           $.ajax({
             type : 'GET',
             url: 'api/orders',
             dataType: 'json',
             success: (res_orders)=>{
               res_orders.map((order)=>{
-                this.setState({orders: this.state.orders.concat(order)})
+              return this.setState({orders: this.state.orders.concat(order)})
               })
-                // this.setState({orders: res_orders})
             }
-            // (res_orders)=>{
-            //     console.log(res_orders.map(
-            //       (order)=>{ order.restaurant_name }))
-            //     }
+          }),
 
+          $.ajax({
+            type : 'GET',
+            url: 'api/meals',
+            dataType: 'json',
+            success: (res_meals)=>{
+              res_meals.map((meal)=>{
+              return this.setState({meals: this.state.orders.concat(meal)})
+              })
+            }
           })
+
+
+        )
 }
 
-  render() {
-    return (
-      <div className="App">
-        Witam, bardzo mi miło! Jestem Twoją aplikacją!
-        <Orders />
 
-        return this.state.orders.map((order)=>{
-            order.restaurant_name
-          });
+render() {
+  return (
+    <div className="App">
+      Witam, bardzo mi miło! Jestem Twoją aplikacją!
+      {
+        this.state.orders.map((order)=>{
+          return(
+            <li key={order.id}>
+              {order.id}:
+              {order.restaurant_name},
+              status: {order.status}
+            </li>)
+        })
 
-      </div>
-    );
-  }
+
+        // this.state.meals.map((meal)=>{
+        //   return(
+        //     <li key={meal.id}>
+        //       {meal.id}:
+        //       {meal.name},
+        //       price: {meal.price}
+        //     </li>)
+        // })
+
+
+
+     }
+
+    </div>
+  );
+}
+
 }
 
 export default App;
