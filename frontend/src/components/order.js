@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Meal from './meal'
 import $ from 'jquery'
 
-class Orders extends Component {
+class Order extends Component {
 
   constructor(){
     super();
@@ -13,7 +13,7 @@ class Orders extends Component {
 
   componentWillMount(){
     $.ajax({
-      url: "api/orders/1/meals",
+      url: "api/orders/2/meals",
       success: (rec_meals)=>{
         (meal)=>{
           return this.setState({meals: this.state.meals.concat(meal)})
@@ -24,15 +24,14 @@ class Orders extends Component {
 
   render() {
     return (
-      <div className="order">
-        This is one given order number {this.props.order_id}
-        <Meal />
-      </div>
+      <ul className="order" >
+      #{this.props.id} {this.props.status} order from {this.props.restaurant_name}
+      </ul>
     );
   }
 }
 
-export default Orders;
+export default Order;
 
 
 
