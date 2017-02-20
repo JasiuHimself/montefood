@@ -8,7 +8,7 @@ import $ from 'jquery';
 class App extends Component {
   constructor(){
     super();
-    this.state = {
+    this.state={
       orders: [],
       meals: []
     };
@@ -39,8 +39,8 @@ class App extends Component {
           this.state.orders.map((order)=>{
             return(<Order id={order.id}
                            key={order.id}
-                           restaurant_name = {order.restaurant_name}
-                           status = {order.status}
+                           restaurant_name={order.restaurant_name}
+                           status={order.status}
             />)
           })
 

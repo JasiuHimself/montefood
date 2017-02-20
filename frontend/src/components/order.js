@@ -13,20 +13,32 @@ class Order extends Component {
 
   componentWillMount(){
     $.ajax({
-      url: "api/orders/2/meals",
+      type: 'GET',
+      url: `api/orders/${this.props.id}/meals`,
+      // url: '/api/orders/1/meals/',
+      dataType: 'json',
       success: (rec_meals)=>{
-        (meal)=>{
+        rec_meals.map((meal)=>{
           return this.setState({meals: this.state.meals.concat(meal)})
-        }
+        })
       }
     });
   }
 
   render() {
     return (
-      <ul className="order" >
-      #{this.props.id} {this.props.status} order from {this.props.restaurant_name}
-      </ul>
+      <span className="order">
+        <h2> #{this.props.id} {this.props.status} order from {this.props.restaurant_name} </h2>
+        <ul className="order" >
+          {
+            this.state.meals.map((meal)=>{
+                return(<Meal key={meal.id} name={meal.name}/> )
+
+            })
+          }
+
+        </ul>
+      </span>
     );
   }
 }
