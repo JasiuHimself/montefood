@@ -68,8 +68,10 @@ _newMealForm(){
     <form onSubmit={this._handleNewMeal.bind(this)}>
       <input type="text" name="mealName" placeholder="Add new meal to order"  ref={(input)=> this._newMealName = input }/>
       <input type="number" name="mealPrice" placeholder="0.00" min="0" step="0.01" ref={(input)=> this._newMealPrice = input } />
-
       <input type="submit" />
+          { this.state.newMealNameAlert ? <span className="error">Meal name has to have at least 2 characters!</span> : undefined }
+          { this.state.newMealPriceAlert ? <span className="error">Meal name has to have positive price!</span> : undefined }
+
     </form>
   )
 }
