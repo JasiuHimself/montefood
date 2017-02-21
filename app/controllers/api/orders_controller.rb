@@ -9,7 +9,7 @@ class Api::OrdersController < ApplicationController
 
   def create
     respond_to :json
-    @order = Order.new(params.require(:order).permit(:restaurant_name))
+    @order = Order.new(params.require(:order).permit(:restaurant_name, :status))
     return false if @order.restaurant_name.length < 2
     @order.save
 

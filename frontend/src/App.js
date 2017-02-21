@@ -32,6 +32,11 @@ class App extends Component {
       }
 
   _addNewOrder(event){
+    let thisApp = this
+    let orderJSON = {
+                      "restaurant_name": this._newOrderRestaurantName.value,
+                      "status": "ordered"
+                    }
     event.preventDefault();
     if (this._newOrderRestaurantName.value.length<2){
       this.setState({restaurantNameLengthAlert : true})
@@ -40,19 +45,14 @@ class App extends Component {
     else
       this.setState({restaurantNameLengthAlert : false})
 
-
     $.ajax({
       type: 'POST',
       url: 'api/orders/',
       data: {
-              order:
-                {"restaurant_name": this._newOrderRestaurantName.value}
+              order: orderJSON
             },
-      success: console.log('udany ajax'),
-      error: function(xhr, status, error) {
-          var err = eval("(" + xhr.responseText + ")");
-          alert(err.Message);
-        }
+      success:
+        thisApp.setState({orders: this.state.orders.concat(orderJSON)})
     });
   }
 

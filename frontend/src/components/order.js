@@ -29,6 +29,7 @@ class Order extends Component {
 
 _handleNewMeal(event){
   event.preventDefault();
+  let thisOrder = this
   let error = false
     if (this._newMealName.value.length<2){
       this.setState({newMealNameAlert : true})
@@ -47,18 +48,22 @@ _handleNewMeal(event){
     if (error)
       return false
 
-    $.ajax({
-      type: 'POST',
-      url: `api/orders/${this.props.id}/meals/`,
-      data: {
-              meal:
-                {
+      let mealJSON = {
                   "name": this._newMealName.value,
                   "price": this._newMealPrice.value,
                   "order_id": this.props.id
                 }
+
+
+    $.ajax({
+      type: 'POST',
+      url: `api/orders/${this.props.id}/meals/`,
+      data: {
+              meal: mealJSON
             },
-      success: console.log('udany ajax')
+      success:
+          thisOrder.setState({meals: this.state.meals.concat(mealJSON)})
+      
     });
   }
 
@@ -83,7 +88,7 @@ _newMealForm(){
         <ul className="order" >
           {
               this.state.meals.map((meal)=>{
-                  return(<Meal key={meal.id} name={meal.name}/> )
+                  return(<Meal key={meal.id} name={meal.name} price={meal.price}/> )
               })
           }
         </ul>
@@ -94,15 +99,3 @@ _newMealForm(){
 }
 
 export default Order;
-
-
-
-
-
-
-
-//
-// chcę mieć kontroler
-// before action
-// ensure authentication
-// i tam wymuszam że jak ktoś jest niezalogoawny to np przeniesie na fb
