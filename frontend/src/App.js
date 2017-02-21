@@ -44,15 +44,17 @@ class App extends Component {
     }
     else
       this.setState({restaurantNameLengthAlert : false})
-
+      
     $.ajax({
       type: 'POST',
       url: 'api/orders/',
-      data: {
-              order: orderJSON
-            },
-      success:
-        thisApp.setState({orders: this.state.orders.concat(orderJSON)})
+      data: {order: orderJSON},
+      success:function(responseJSON){
+        thisApp.setState({orders: thisApp.state.orders.concat(responseJSON)})
+      },
+      error: function (request, status, error) {
+         alert(request.responseText);
+     }
     });
   }
 

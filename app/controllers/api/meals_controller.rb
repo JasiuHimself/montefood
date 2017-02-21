@@ -13,7 +13,7 @@ class Api::MealsController < ApplicationController
     if Order.exists?(@meal.order_id)
       @meal.save
     end
-
+    render json: @meal
   end
 
 

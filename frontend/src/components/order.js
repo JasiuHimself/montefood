@@ -54,16 +54,16 @@ _handleNewMeal(event){
                   "order_id": this.props.id
                 }
 
-
     $.ajax({
       type: 'POST',
       url: `api/orders/${this.props.id}/meals/`,
-      data: {
-              meal: mealJSON
-            },
-      success:
-          thisOrder.setState({meals: this.state.meals.concat(mealJSON)})
-      
+      data: {meal: mealJSON},
+      success:function(responseJSON){
+        thisOrder.setState({meals: thisOrder.state.meals.concat(responseJSON)})
+      },
+      error: function (request, status, error) {
+       alert(request.responseText);
+      }
     });
   }
 

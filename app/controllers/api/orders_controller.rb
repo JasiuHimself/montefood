@@ -12,6 +12,7 @@ class Api::OrdersController < ApplicationController
     @order = Order.new(params.require(:order).permit(:restaurant_name, :status))
     return false if @order.restaurant_name.length < 2
     @order.save
+    render json: @order
 
   end
 
