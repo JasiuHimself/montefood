@@ -7,7 +7,6 @@ class Meal extends Component {
 
   render() {
     return (
-
       <li className="meal">
         {this.props.name}
       </li>

@@ -7,7 +7,9 @@ class Order extends Component {
   constructor(){
     super();
     this.state = {
-      meals: []
+      meals: [],
+      newMealNameAlert: false,
+      newMealPriceAlert: false
     }
   }
 
@@ -15,7 +17,6 @@ class Order extends Component {
     $.ajax({
       type: 'GET',
       url: `api/orders/${this.props.id}/meals`,
-      // url: '/api/orders/1/meals/',
       dataType: 'json',
       success: (rec_meals)=>{
         rec_meals.map((meal)=>{
@@ -25,19 +26,66 @@ class Order extends Component {
     });
   }
 
+
+_handleNewMeal(event){
+  event.preventDefault();
+  let error = false
+    if (this._newMealName.value.length<2){
+      this.setState({newMealNameAlert : true})
+      error = true
+    }
+    else
+      this.setState({restaurantNameLengthAlert : false})
+
+    if (this._newMealPrice.value<0){
+      this.setState({newMealPriceAlert : true})
+      error = true
+    }
+    else
+      this.setState({restaurantNameLengthAlert : false})
+
+    if (error)
+      return false
+
+    $.ajax({
+      type: 'POST',
+      url: `api/orders/${this.props.id}/meals/`,
+      data: {
+              meal:
+                {
+                  "name": this._newMealName.value,
+                  "price": this._newMealPrice.value,
+                  "order_id": this.props.id
+                }
+            },
+      success: console.log('udany ajax')
+    });
+  }
+
+
+_newMealForm(){
+  return(
+    <form onSubmit={this._handleNewMeal.bind(this)}>
+      <input type="text" name="mealName" placeholder="Add new meal to order"  ref={(input)=> this._newMealName = input }/>
+      <input type="number" name="mealPrice" placeholder="0.00" min="0" step="0.01" ref={(input)=> this._newMealPrice = input } />
+
+      <input type="submit" />
+    </form>
+  )
+}
+
   render() {
     return (
       <span className="order">
         <h2> #{this.props.id} {this.props.status} order from {this.props.restaurant_name} </h2>
         <ul className="order" >
           {
-            this.state.meals.map((meal)=>{
-                return(<Meal key={meal.id} name={meal.name}/> )
-
-            })
+              this.state.meals.map((meal)=>{
+                  return(<Meal key={meal.id} name={meal.name}/> )
+              })
           }
-
         </ul>
+        {this._newMealForm()}
       </span>
     );
   }

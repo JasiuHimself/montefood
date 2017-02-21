@@ -10,7 +10,8 @@ class App extends Component {
     super();
     this.state={
       orders: [],
-      meals: []
+      meals: [],
+      restaurantNameLengthAlert: false
     };
   }
 
@@ -30,11 +31,34 @@ class App extends Component {
         )
       }
 
+  _addNewOrder(event){
+    event.preventDefault();
+    if (this._newOrderRestaurantName.value.length<2){
+      this.setState({restaurantNameLengthAlert : true})
+      return false
+    }
+    else
+      this.setState({restaurantNameLengthAlert : false})
+
+
+    $.ajax({
+      type: 'POST',
+      url: 'api/orders/',
+      data: {
+              order:
+                {"restaurant_name": this._newOrderRestaurantName.value}
+            },
+      success: console.log('udany ajax'),
+      error: function(xhr, status, error) {
+          var err = eval("(" + xhr.responseText + ")");
+          alert(err.Message);
+        }
+    });
+  }
 
   render(){
     return (
       <div className="App">
-        Witam, bardzo mi miło! Jestem Twoją aplikacją!
         {
           this.state.orders.map((order)=>{
             return(<Order id={order.id}
@@ -46,12 +70,14 @@ class App extends Component {
 
         }
 
+        <form onSubmit={this._addNewOrder.bind(this)}>
+          <input type="text" placeholder="Restaurant name" ref={(input)=> this._newOrderRestaurantName = input }/>
+          <input type="submit" value="Add order"/>
+        </form>
+        { this.state.restaurantNameLengthAlert ? <span className="error">Restaurant name has to have at least 2 characters!</span> : undefined }
       </div>
     );
   }
-
-
-
 
 
 }
