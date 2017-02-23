@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  get 'welcome/index'
+
 
   root 'welcome#index'
+  get 'auth/:provider/callback', to: "sessions#create"
+  delete 'sign_out', to: "sessions#destroy", as: "sign_out"
   # root "api/orders#index" #potem można wywalić
 
   namespace :api do

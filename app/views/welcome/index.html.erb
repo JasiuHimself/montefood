@@ -1,4 +1,16 @@
 <h1>MONTEFOOD SYSTEM</h1>
+
+
+<% if current_user %>
+ZALOGOWANO JAKO
+<%= current_user.name %>
+<img width="20px" height="20px" src="<%= current_user.image_url %>" ?>
+<%= link_to "Sign out!", 'sign_out', method: :delete %>
+<% else %>
+<%= link_to "auth/github", "auth/github" %>
+<% end %>
+
+
 <div id="root"></div>
 <%= javascript_include_tag "http://localhost:8080/static/js/bundle.js" %>
 <!-- webpack ma coś takiego jak webpack dev server i to w devie stawia specjalny server do serwowania assetów i to jest pod tym adresem -->
