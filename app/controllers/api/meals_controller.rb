@@ -7,7 +7,12 @@ class Api::MealsController < ApplicationController
 
   def create
     respond_to :json
-    @meal = Meal.new(params.require(:meal).permit(:name, :price, :order_id))
+    @meal = Meal.new(params.require(:meal).permit(:name, :price, :order_id, :user_id))
+
+    if Meal.exists?(@meal.order_id)
+      return false
+    end
+
     return false if @meal.name.length < 2
     return false if @meal.price < 0
     if Order.exists?(@meal.order_id)

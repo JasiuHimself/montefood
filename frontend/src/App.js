@@ -12,16 +12,23 @@ class App extends Component {
       display_orders_by_status: "active",
       orders: [],
       meals: [],
+      user: {},
       restaurantNameLengthAlert: false
     };
   }
 
     componentWillMount(){
-      return(
           this._getOrders()
-        )
-      }
-
+          let thisApp = this;
+          $.ajax({
+              type : 'GET',
+              url: '/sessions/index',
+              dataType: 'json',
+              success: (current_user)=>{
+                  thisApp.setState({ user: current_user })
+              }
+          })
+    }
 
 
   _getOrders(){
@@ -31,9 +38,9 @@ class App extends Component {
         dataType: 'json',
         success: (rec_orders)=>{
           rec_orders.map((order)=>{
-            if (this.state.display_orders_by_status == "active" && order.status == "ordered")
+            if (this.state.display_orders_by_status === "active" && order.status === "ordered")
               return this.setState({orders: this.state.orders.concat(order)})
-            if (this.state.display_orders_by_status == "history" && (order.status =="finalized" || order.status == "delivered"))
+            if (this.state.display_orders_by_status === "history" && (order.status ==="finalized" || order.status === "delivered"))
               return this.setState({orders: this.state.orders.concat(order)})
           })
         }
@@ -100,26 +107,15 @@ class App extends Component {
     )
   }
 
-
-
   _displayNewOrderForm(){
     let thisApp = this
-      // return(
-        // {if (thisApp.status.display_orders_by_status){
-          return(
-            <form onSubmit={thisApp._addNewOrder.bind(this)}>
-              <input type="text" placeholder="Restaurant name" ref={(input)=> thisApp._newOrderRestaurantName = input }/>
-              <input type="submit" value="Add order"/>
-            </form>
-          )
-
-
-      // )
-      // }}
+    return(
+      <form onSubmit={thisApp._addNewOrder.bind(this)}>
+        <input type="text" placeholder="Restaurant name" ref={(input)=> thisApp._newOrderRestaurantName = input }/>
+        <input type="submit" value="Add order"/>
+      </form>
+    )
   }
-
-
-
 
 
   _handleOrderStatusChange(event){
@@ -148,17 +144,18 @@ class App extends Component {
 
   }
 
-
-
-
-
   render(){
     let form = ""
-    if (this.state.display_orders_by_status=="active"){
-      form = <form onSubmit={this._addNewOrder.bind(this)}>
-        <input type="text" placeholder="Restaurant name" ref={(input)=> this._newOrderRestaurantName = input }/>
-        <input type="submit" value="Add order"/>
-      </form> ;}
+    if (this.state.display_orders_by_status==="active"){
+      form =
+      <div className="order">
+        Place new order
+        <form  onSubmit={this._addNewOrder.bind(this)}>
+          <input type="text" placeholder="Restaurant name" ref={(input)=> this._newOrderRestaurantName = input }/>
+          <input type="submit" value="Add order"/>
+        </form>
+      </div>
+       ;}
 
 
     return (
@@ -170,7 +167,8 @@ class App extends Component {
                            key={order.id}
                            restaurant_name={order.restaurant_name}
                            status={order.status}
-                           handleStatusChange = {this._handleOrderStatusChange.bind(this)}
+                           handleStatusChange={this._handleOrderStatusChange.bind(this)}
+                           current_user={this.state.user.id}
             />)
           })
 

@@ -9,17 +9,21 @@ class Order extends Component {
     this.state = {
       meals: [],
       newMealNameAlert: false,
-      newMealPriceAlert: false
+      newMealPriceAlert: false,
+      currentUserAlreadyHasMealInOrder: false
     }
   }
 
   componentWillMount(){
+    let thisApp = this
     $.ajax({
       type: 'GET',
       url: `api/orders/${this.props.id}/meals`,
       dataType: 'json',
       success: (rec_meals)=>{
         rec_meals.map((meal)=>{
+          if (meal.user_id === thisApp.props.current_user)
+            thisApp.setState({ currentUserAlreadyHasMealInOrder: true})
           return this.setState({meals: this.state.meals.concat(meal)})
         })
       }
@@ -51,7 +55,8 @@ _handleNewMeal(event){
       let mealJSON = {
                   "name": this._newMealName.value,
                   "price": this._newMealPrice.value,
-                  "order_id": this.props.id
+                  "order_id": this.props.id,
+                  "user_id": this.props.current_user
                 }
 
     $.ajax({
@@ -60,6 +65,7 @@ _handleNewMeal(event){
       data: {meal: mealJSON},
       success:function(responseJSON){
         thisOrder.setState({meals: thisOrder.state.meals.concat(responseJSON)})
+        thisOrder.setState({ currentUserAlreadyHasMealInOrder : true})
       },
       error: function (request, status, error) {
        alert(request.responseText);
@@ -72,7 +78,8 @@ _handleNewMeal(event){
   render() {
 
     let mealForm=""
-    if(this.props.status=="ordered"){
+
+    if(this.props.status==="ordered" ){
       mealForm=
       <form onSubmit={this._handleNewMeal.bind(this)}>
         <input type="text" name="mealName" placeholder="Add new meal to order"  ref={(input)=> this._newMealName = input }/>
@@ -88,7 +95,7 @@ _handleNewMeal(event){
 
     let statusSelect=
       <select onChange={this.props.handleStatusChange.bind(this)}
-      value = {this.props.status} id={this.props.id}
+      value={this.props.status} id={this.props.id} className="statusSelectMenu"
       ref="statusSelectMenu">
         <option value="ordered">Ordered</option>
         <option value="finalized">Finalized</option>
@@ -96,18 +103,18 @@ _handleNewMeal(event){
       </select>;
 
     return (
-      <span className="order">
+      <div className="order">
       {statusSelect}
-        <h2> #{this.props.id} {this.props.status} order from {this.props.restaurant_name} </h2>
-        <ul className="order" >
+        <div className="orderDescription"> Order from {this.props.restaurant_name} </div>
+        <ul>
           {
               this.state.meals.map((meal)=>{
                   return(<Meal key={meal.id} name={meal.name} price={meal.price}/> )
               })
           }
         </ul>
-        {mealForm}
-      </span>
+        {   (!this.state.currentUserAlreadyHasMealInOrder) ? mealForm : ""}
+      </div>
     );
   }
 }

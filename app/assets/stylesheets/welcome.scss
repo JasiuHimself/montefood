@@ -5,9 +5,14 @@
 
 @font-face {
         font-family: 'asap';
-        src: font-url('/assets/fonts/Asap-Bold.otf');
+        src: font-url('Asap-Bold.otf');
      }
 
+
+@font-face {
+       font-family: 'asapReg';
+       src: font-url('Asap-Regular.otf');
+    }
 
 
 #navBar{
@@ -28,7 +33,7 @@
   height: 30px;
   width: 30px;
   float: left;
-  margin: 5px 0 0 20px;
+  margin: 8px 0 0 20px;
 
 }
 
@@ -66,7 +71,23 @@
 }
 
 #avatarInfo {
-  text-decoration: none;
+  font-family: asap;
+
   float: right;
-  margin: 12px 20px 0 20px;
+  margin: 14px 20px 0 20px;
+}
+
+#avatarInfo a{
+    text-decoration: none;
+    color:black;
+}
+
+#avatarInfo a:visited{
+    text-decoration: none;
+    color:black;
+}
+
+#avatarInfo a:hover{
+    text-decoration: underline;
+    color:black;
 }

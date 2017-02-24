@@ -1,14 +1,23 @@
+@font-face {
+        font-family: 'asap';
+        src: font-url('Asap-Bold.otf');
+     }
+
+
+@font-face {
+       font-family: 'asapReg';
+       src: font-url('Asap-Regular.otf');
+    }
 
 #orderStatusMenu{
-
   height: 30px;
   width:200px;
   float:right;
+  clear: both;
 }
 
 #orderStatusMenu div{
-
-
+  cursor:pointer;
   padding-top: 7px;
   padding-left: 10px;
   padding-right: 10px;
@@ -19,10 +28,68 @@
 
 }
 .active{
+    font-family: asap;
     float: left;
-    color:red;
 
 }
 .inactive{
+    font-family: asapReg;
     float: left;
+}
+
+select{
+  background-color: white;
+  font-family: asapReg;
+}
+
+option:checked{
+  font-family: asap;
+  text-decoration: underline;
+}
+
+
+.App{
+
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.order{
+  background-color: rgba(255, 0, 0, 0.02);
+  clear: both;
+  width: 70%;
+  margin: 0px auto 30px auto ;
+  padding: 15px;
+  border-radius: 4px;
+  font-family: asap;
+}
+
+.order ul{
+  list-style: none;
+  font-family: asapReg;
+  font-size: 13px;
+  margin-top: 25px;
+
+}
+
+
+.statusSelectMenu{
+  float:right;
+}
+
+
+.orderDescription{
+  float: left;
+  font-family: asap;
+  font-size: 17px;
+}
+
+.error{
+  color:  red;
+}
+
+#newFormName{
+  margin: 0px auto 0px auto;
 }

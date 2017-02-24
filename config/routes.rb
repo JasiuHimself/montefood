@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   root 'welcome#index'
   get 'auth/:provider/callback', to: "sessions#create"
+  get 'sessions/index'
   delete 'sign_out', to: "sessions#destroy", as: "sign_out"
   # root "api/orders#index" #potem można wywalić
 

@@ -11,6 +11,9 @@
     </div>
 
   <% else %>
+    <div id="avatarInfo">
+      Log in
+    </div>
     <%= link_to "auth/github" do %>
     <%= image_tag "github.png", id: "avatar"%>
     <%- end %>
