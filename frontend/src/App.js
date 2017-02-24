@@ -71,9 +71,11 @@ class App extends Component {
 
 
   _changeOrderStatusToDisplay(event){
-    event.preventDefault()
-    var el = event.target
-    this.setState({display_orders_by_status: el.getAttribute('value')})
+    if(event){
+      event.preventDefault()
+      var el = event.target
+      this.setState({display_orders_by_status: el.getAttribute('value')})
+    }
     this.setState({orders: []})
     this._getOrders()
   }
@@ -116,6 +118,40 @@ class App extends Component {
       // }}
   }
 
+
+
+
+
+  _handleOrderStatusChange(event){
+
+    let selectedStateOption = event.target.value;
+    let orderId = event.target.id;
+
+    let orderUpdateJSON = {
+        "id": orderId,
+        "status": selectedStateOption
+    }
+    let thisApp = this
+    $.ajax({
+      type: 'PUT',
+      url: `api/orders/${orderId}`,
+      data: {order: orderUpdateJSON},
+      success:function(responseJSON){
+        thisApp.setState({ status: responseJSON["status"]})
+          thisApp._changeOrderStatusToDisplay()
+      },
+      error: function (request, status, error) {
+       alert(request.responseText);
+      }
+    });
+
+
+  }
+
+
+
+
+
   render(){
     let form = ""
     if (this.state.display_orders_by_status=="active"){
@@ -134,6 +170,7 @@ class App extends Component {
                            key={order.id}
                            restaurant_name={order.restaurant_name}
                            status={order.status}
+                           handleStatusChange = {this._handleOrderStatusChange.bind(this)}
             />)
           })
 

@@ -7,7 +7,6 @@ class Order extends Component {
   constructor(props){
     super(props);
     this.state = {
-      status: this.props.status,
       meals: [],
       newMealNameAlert: false,
       newMealPriceAlert: false
@@ -69,31 +68,6 @@ _handleNewMeal(event){
   }
 
 
-_handleOrderStatusChange(event){
-  let selectedOption = event.target.value;
-  let orderUpdateJSON = {
-      "id": this.props.id,
-      "status": selectedOption
-  }
-  let thisApp = this
-  $.ajax({
-    type: 'PUT',
-    url: `api/orders/${this.props.id}`,
-    data: {order: orderUpdateJSON},
-    success:function(responseJSON){
-      console.log(responseJSON["status"])
-      thisApp.setState({ status: responseJSON["status"]})
-    },
-    error: function (request, status, error) {
-     alert(request.responseText);
-    }
-  });
-
-
-}
-
-
-
 
   render() {
 
@@ -113,8 +87,8 @@ _handleOrderStatusChange(event){
 
 
     let statusSelect=
-      <select onChange={this._handleOrderStatusChange.bind(this)}
-      value = {this.props.status}
+      <select onChange={this.props.handleStatusChange.bind(this)}
+      value = {this.props.status} id={this.props.id}
       ref="statusSelectMenu">
         <option value="ordered">Ordered</option>
         <option value="finalized">Finalized</option>
