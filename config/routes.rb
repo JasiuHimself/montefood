@@ -7,8 +7,8 @@ Rails.application.routes.draw do
   # root "api/orders#index" #potem można wywalić
 
   namespace :api do
-    resources :orders, only: [:index, :show, :create] do
-      resources :meals, only: [:index, :create] #bo tylko pobieramy wszystkie dla orderu
+    resources :orders, only: [:index, :show, :create, :update] do
+      resources :meals, only: [:index, :create]
     end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

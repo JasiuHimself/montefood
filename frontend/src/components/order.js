@@ -4,9 +4,10 @@ import $ from 'jquery'
 
 class Order extends Component {
 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
+      status: this.props.status,
       meals: [],
       newMealNameAlert: false,
       newMealPriceAlert: false
@@ -68,22 +69,61 @@ _handleNewMeal(event){
   }
 
 
-_newMealForm(){
-  return(
-    <form onSubmit={this._handleNewMeal.bind(this)}>
-      <input type="text" name="mealName" placeholder="Add new meal to order"  ref={(input)=> this._newMealName = input }/>
-      <input type="number" name="mealPrice" placeholder="0.00" min="0" step="0.01" ref={(input)=> this._newMealPrice = input } />
-      <input type="submit" />
-          { this.state.newMealNameAlert ? <span className="error">Meal name has to have at least 2 characters!</span> : undefined }
-          { this.state.newMealPriceAlert ? <span className="error">Meal name has to have positive price!</span> : undefined }
+_handleOrderStatusChange(event){
+  let selectedOption = event.target.value;
+  let orderUpdateJSON = {
+      "id": this.props.id,
+      "status": selectedOption
+  }
+  let thisApp = this
+  $.ajax({
+    type: 'PUT',
+    url: `api/orders/${this.props.id}`,
+    data: {order: orderUpdateJSON},
+    success:function(responseJSON){
+      console.log(responseJSON["status"])
+      thisApp.setState({ status: responseJSON["status"]})
+    },
+    error: function (request, status, error) {
+     alert(request.responseText);
+    }
+  });
 
-    </form>
-  )
+
 }
 
+
+
+
   render() {
+
+    let mealForm=""
+    if(this.props.status=="ordered"){
+      mealForm=
+      <form onSubmit={this._handleNewMeal.bind(this)}>
+        <input type="text" name="mealName" placeholder="Add new meal to order"  ref={(input)=> this._newMealName = input }/>
+        <input type="number" name="mealPrice" placeholder="0.00" min="0" step="0.01" ref={(input)=> this._newMealPrice = input } />
+        <input type="submit" />
+            { this.state.newMealNameAlert ? <span className="error">Meal name has to have at least 2 characters!</span> : undefined }
+            { this.state.newMealPriceAlert ? <span className="error">Meal name has to have positive price!</span> : undefined }
+
+      </form>;
+    }
+
+
+
+    let statusSelect=
+      <select onChange={this._handleOrderStatusChange.bind(this)}
+      value = {this.props.status}
+      ref="statusSelectMenu">
+        <option value="ordered">Ordered</option>
+        <option value="finalized">Finalized</option>
+        <option value="delivered">Delivered</option>
+      </select>;
+
     return (
       <span className="order">
+      {statusSelect}
         <h2> #{this.props.id} {this.props.status} order from {this.props.restaurant_name} </h2>
         <ul className="order" >
           {
@@ -92,7 +132,7 @@ _newMealForm(){
               })
           }
         </ul>
-        {this._newMealForm()}
+        {mealForm}
       </span>
     );
   }

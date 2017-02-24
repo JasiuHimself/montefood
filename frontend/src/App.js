@@ -9,6 +9,7 @@ class App extends Component {
   constructor(){
     super();
     this.state={
+      display_orders_by_status: "active",
       orders: [],
       meals: [],
       restaurantNameLengthAlert: false
@@ -17,19 +18,28 @@ class App extends Component {
 
     componentWillMount(){
       return(
-        $.ajax({
-            type : 'GET',
-            url: 'api/orders',
-            dataType: 'json',
-            success: (rec_orders)=>{
-              rec_orders.map((order)=>{
-                return this.setState({orders: this.state.orders.concat(order)})
-              })
-            }
-        })
-
+          this._getOrders()
         )
       }
+
+
+
+  _getOrders(){
+    $.ajax({
+        type : 'GET',
+        url: 'api/orders',
+        dataType: 'json',
+        success: (rec_orders)=>{
+          rec_orders.map((order)=>{
+            if (this.state.display_orders_by_status == "active" && order.status == "ordered")
+              return this.setState({orders: this.state.orders.concat(order)})
+            if (this.state.display_orders_by_status == "history" && (order.status =="finalized" || order.status == "delivered"))
+              return this.setState({orders: this.state.orders.concat(order)})
+          })
+        }
+    })
+
+  }
 
   _addNewOrder(event){
     let thisApp = this
@@ -44,7 +54,7 @@ class App extends Component {
     }
     else
       this.setState({restaurantNameLengthAlert : false})
-      
+
     $.ajax({
       type: 'POST',
       url: 'api/orders/',
@@ -58,9 +68,66 @@ class App extends Component {
     });
   }
 
+
+
+  _changeOrderStatusToDisplay(event){
+    event.preventDefault()
+    var el = event.target
+    this.setState({display_orders_by_status: el.getAttribute('value')})
+    this.setState({orders: []})
+    this._getOrders()
+  }
+
+  _renderDisplayOrderByStatusMenu(){
+    return(
+      <div id="orderStatusMenu">
+        <div className={this.state.display_orders_by_status==="active" ? "active" :"inactive" }
+              value="active"
+              onClick={this._changeOrderStatusToDisplay.bind(this)}>
+                ACTIVE
+        </div>
+
+        <div className={this.state.display_orders_by_status==="history" ? "active" :"inactive" }
+            value="history"
+            onClick={this._changeOrderStatusToDisplay.bind(this)}>
+              HISTORY
+        </div>
+
+      </div>
+
+    )
+  }
+
+
+
+  _displayNewOrderForm(){
+    let thisApp = this
+      // return(
+        // {if (thisApp.status.display_orders_by_status){
+          return(
+            <form onSubmit={thisApp._addNewOrder.bind(this)}>
+              <input type="text" placeholder="Restaurant name" ref={(input)=> thisApp._newOrderRestaurantName = input }/>
+              <input type="submit" value="Add order"/>
+            </form>
+          )
+
+
+      // )
+      // }}
+  }
+
   render(){
+    let form = ""
+    if (this.state.display_orders_by_status=="active"){
+      form = <form onSubmit={this._addNewOrder.bind(this)}>
+        <input type="text" placeholder="Restaurant name" ref={(input)=> this._newOrderRestaurantName = input }/>
+        <input type="submit" value="Add order"/>
+      </form> ;}
+
+
     return (
       <div className="App">
+      {this._renderDisplayOrderByStatusMenu()}
         {
           this.state.orders.map((order)=>{
             return(<Order id={order.id}
@@ -71,11 +138,7 @@ class App extends Component {
           })
 
         }
-
-        <form onSubmit={this._addNewOrder.bind(this)}>
-          <input type="text" placeholder="Restaurant name" ref={(input)=> this._newOrderRestaurantName = input }/>
-          <input type="submit" value="Add order"/>
-        </form>
+        {form}
         { this.state.restaurantNameLengthAlert ? <span className="error">Restaurant name has to have at least 2 characters!</span> : undefined }
       </div>
     );

@@ -16,5 +16,13 @@ class Api::OrdersController < ApplicationController
 
   end
 
+  def update
+    respond_to :json
+    @order = Order.find(params[:id])
+    @order.status = params[:order][:status]
+    @order.save
+    render json: @order
+  end
+
 
 end

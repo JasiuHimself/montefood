@@ -1,0 +1,28 @@
+
+#orderStatusMenu{
+
+  height: 30px;
+  width:200px;
+  float:right;
+}
+
+#orderStatusMenu div{
+
+
+  padding-top: 7px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  height:23px;
+  margin-left: 1px;
+
+
+}
+.active{
+    float: left;
+    color:red;
+
+}
+.inactive{
+    float: left;
+}
