@@ -1,19 +1,19 @@
 // Place all the styles related to the Welcome controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
-
 @font-face {
         font-family: 'asap';
         src: font-url('Asap-Bold.otf');
-     }
-
+}
 
 @font-face {
        font-family: 'asapReg';
        src: font-url('Asap-Regular.otf');
-    }
+}
 
+#root{
+  margin-top: 90px;
+}
 
 #navBar{
   height: 45px;
@@ -26,7 +26,6 @@
   left: 0px;
   width: 100%;
   background-color: white;
-
 }
 
 #logo{
@@ -34,7 +33,6 @@
   width: 30px;
   float: left;
   margin: 8px 0 0 20px;
-
 }
 
 #napis{
@@ -72,7 +70,6 @@
 
 #avatarInfo {
   font-family: asap;
-
   float: right;
   margin: 14px 20px 0 20px;
 }

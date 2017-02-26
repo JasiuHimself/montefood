@@ -1,5 +1,8 @@
-Do I need to be serious in README file?
-
 Meal ordering coordination system
 
-After doing some research i decided to use React as javascript framework and probably doorkeeper gem to implement oauth.
+In order to run this application:
+1. cd montefood
+2. rails s
+3. (in new terminal) cd montefood/frontend
+4. npm start
+5. (inside web browser) localhost:3000

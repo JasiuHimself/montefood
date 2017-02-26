@@ -1,15 +1,11 @@
 <div id="navBar">
   <%= image_tag "logo.png", id: "logo"%>
   <div id="napis">Montefood</div>
-
-
   <% if current_user %>
-
     <%= image_tag current_user.image_url, id: "avatar" %>
     <div id="avatarInfo">
       <%= link_to current_user.name, 'sign_out', method: :delete %>
     </div>
-
   <% else %>
     <div id="avatarInfo">
       Log in
@@ -18,15 +14,12 @@
     <%= image_tag "github.png", id: "avatar"%>
     <%- end %>
   <% end %>
-
 </div>
 <div class = "clear"></div>
-
-
-
-<br><br><br>
 <% if current_user %>
   <div id="root"></div>
   <%= javascript_include_tag "http://localhost:8080/static/js/bundle.js" %>
-  <!-- webpack ma coś takiego jak webpack dev server i to w devie stawia specjalny server do serwowania assetów i to jest pod tym adresem -->
   <% end %>
+  <!-- <% flash.each do |name, msg| -%>
+    <%= content_tag :div, msg, class: name %>
+  <% end -%> -->

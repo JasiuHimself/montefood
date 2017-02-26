@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-
   def index
     @user = User.find(session[:user_id] )
     render :json => @user
@@ -18,5 +17,4 @@ class SessionsController < ApplicationController
     session[:omniauth]=nil
     redirect_to root_url, notice: "SIGNED OUT"
   end
-
 end

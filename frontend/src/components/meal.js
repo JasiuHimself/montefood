@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-
-
-// do mealsów tylko ID ORDERU I W ŚRODKU ITERUJĘ PO MEALACH WŁAŚNIE
-
 class Meal extends Component {
-
   render() {
     return (
       <li className="meal">
@@ -13,5 +8,4 @@ class Meal extends Component {
     );
   }
 }
-
 export default Meal;

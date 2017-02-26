@@ -4,8 +4,8 @@ import $ from 'jquery'
 
 class Order extends Component {
 
-  constructor(props){
-    super(props);
+  constructor(){
+    super();
     this.state = {
       meals: [],
       newMealNameAlert: false,
@@ -15,7 +15,7 @@ class Order extends Component {
   }
 
   componentWillMount(){
-    let thisApp = this
+    let thisApp = this;
     $.ajax({
       type: 'GET',
       url: `api/orders/${this.props.id}/meals`,
@@ -24,7 +24,7 @@ class Order extends Component {
         rec_meals.map((meal)=>{
           if (meal.user_id === thisApp.props.current_user)
             thisApp.setState({ currentUserAlreadyHasMealInOrder: true})
-          return this.setState({meals: this.state.meals.concat(meal)})
+            thisApp.setState({meals: this.state.meals.concat(meal)})
         })
       }
     });
@@ -33,24 +33,26 @@ class Order extends Component {
 
 _handleNewMeal(event){
   event.preventDefault();
-  let thisOrder = this
-  let error = false
+  let thisOrder = this;
+  let error = false;
+  this.setState({newMealNameAlert: false});
+  this.setState({newMealPriceAlert: false });
     if (this._newMealName.value.length<2){
-      this.setState({newMealNameAlert : true})
-      error = true
+      this.setState({newMealNameAlert : true});
+      error = true;
     }
     else
-      this.setState({restaurantNameLengthAlert : false})
+      this.setState({restaurantNameLengthAlert : false});
 
-    if (this._newMealPrice.value<0){
-      this.setState({newMealPriceAlert : true})
-      error = true
+    if (this._newMealPrice.value<=0) {
+      this.setState({newMealPriceAlert : true});
+      error = true;
     }
     else
       this.setState({restaurantNameLengthAlert : false})
 
     if (error)
-      return false
+      return false;
 
       let mealJSON = {
                   "name": this._newMealName.value,
@@ -64,8 +66,8 @@ _handleNewMeal(event){
       url: `api/orders/${this.props.id}/meals/`,
       data: {meal: mealJSON},
       success:function(responseJSON){
-        thisOrder.setState({meals: thisOrder.state.meals.concat(responseJSON)})
-        thisOrder.setState({ currentUserAlreadyHasMealInOrder : true})
+        thisOrder.setState({meals: thisOrder.state.meals.concat(responseJSON)});
+        thisOrder.setState({ currentUserAlreadyHasMealInOrder : true});
       },
       error: function (request, status, error) {
        alert(request.responseText);
@@ -90,7 +92,6 @@ _handleNewMeal(event){
 
       </form>;
     }
-
 
 
     let statusSelect=

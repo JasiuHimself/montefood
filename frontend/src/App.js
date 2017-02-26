@@ -3,8 +3,6 @@ import Order from './components/order'
 import './App.css';
 import $ from 'jquery';
 
-
-
 class App extends Component {
   constructor(){
     super();
@@ -17,19 +15,18 @@ class App extends Component {
     };
   }
 
-    componentWillMount(){
-          this._getOrders()
-          let thisApp = this;
-          $.ajax({
-              type : 'GET',
-              url: '/sessions/index',
-              dataType: 'json',
-              success: (current_user)=>{
-                  thisApp.setState({ user: current_user })
-              }
-          })
-    }
-
+  componentWillMount(){
+        this._getOrders()
+        let thisApp = this;
+        $.ajax({
+            type : 'GET',
+            url: '/sessions/index',
+            dataType: 'json',
+            success: (current_user)=>{
+                thisApp.setState({ user: current_user })
+            }
+        })
+  }
 
   _getOrders(){
     $.ajax({
@@ -39,9 +36,9 @@ class App extends Component {
         success: (rec_orders)=>{
           rec_orders.map((order)=>{
             if (this.state.display_orders_by_status === "active" && order.status === "ordered")
-              return this.setState({orders: this.state.orders.concat(order)})
+              return this.setState({orders: this.state.orders.concat(order)});
             if (this.state.display_orders_by_status === "history" && (order.status ==="finalized" || order.status === "delivered"))
-              return this.setState({orders: this.state.orders.concat(order)})
+              return this.setState({orders: this.state.orders.concat(order)});
           })
         }
     })
@@ -49,11 +46,11 @@ class App extends Component {
   }
 
   _addNewOrder(event){
-    let thisApp = this
+    let thisApp = this;
     let orderJSON = {
                       "restaurant_name": this._newOrderRestaurantName.value,
                       "status": "ordered"
-                    }
+                    };
     event.preventDefault();
     if (this._newOrderRestaurantName.value.length<2){
       this.setState({restaurantNameLengthAlert : true})
@@ -75,8 +72,6 @@ class App extends Component {
     });
   }
 
-
-
   _changeOrderStatusToDisplay(event){
     if(event){
       event.preventDefault()
@@ -95,15 +90,12 @@ class App extends Component {
               onClick={this._changeOrderStatusToDisplay.bind(this)}>
                 ACTIVE
         </div>
-
         <div className={this.state.display_orders_by_status==="history" ? "active" :"inactive" }
             value="history"
             onClick={this._changeOrderStatusToDisplay.bind(this)}>
               HISTORY
         </div>
-
       </div>
-
     )
   }
 
@@ -117,16 +109,13 @@ class App extends Component {
     )
   }
 
-
   _handleOrderStatusChange(event){
-
     let selectedStateOption = event.target.value;
     let orderId = event.target.id;
-
     let orderUpdateJSON = {
-        "id": orderId,
-        "status": selectedStateOption
-    }
+                            "id": orderId,
+                            "status": selectedStateOption
+                          }
     let thisApp = this
     $.ajax({
       type: 'PUT',
@@ -140,8 +129,6 @@ class App extends Component {
        alert(request.responseText);
       }
     });
-
-
   }
 
   render(){
@@ -154,9 +141,9 @@ class App extends Component {
           <input type="text" placeholder="Restaurant name" ref={(input)=> this._newOrderRestaurantName = input }/>
           <input type="submit" value="Add order"/>
         </form>
+        { this.state.restaurantNameLengthAlert ? <span className="error">Restaurant name has to have at least 2 characters!</span> : undefined }
       </div>
-       ;}
-
+    }
 
     return (
       <div className="App">
@@ -171,15 +158,10 @@ class App extends Component {
                            current_user={this.state.user.id}
             />)
           })
-
         }
         {form}
-        { this.state.restaurantNameLengthAlert ? <span className="error">Restaurant name has to have at least 2 characters!</span> : undefined }
       </div>
     );
   }
-
-
 }
-
 export default App;
