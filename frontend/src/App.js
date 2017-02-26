@@ -35,9 +35,8 @@ class App extends Component {
         dataType: 'json',
         success: (rec_orders)=>{
           rec_orders.map((order)=>{
-            if (this.state.display_orders_by_status === "active" && order.status === "ordered")
-              return this.setState({orders: this.state.orders.concat(order)});
-            if (this.state.display_orders_by_status === "history" && (order.status ==="finalized" || order.status === "delivered"))
+            if ((this.state.display_orders_by_status === "active" && order.status === "ordered") ||
+            ((this.state.display_orders_by_status === "history" && (order.status ==="finalized" || order.status === "delivered"))))
               return this.setState({orders: this.state.orders.concat(order)});
           })
         }

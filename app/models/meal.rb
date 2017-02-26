@@ -4,5 +4,5 @@ class Meal < ApplicationRecord
   validates :order_id, presence: true, numericality: { only_integer: true }
   belongs_to :order
   validates :order, presence: true
-  validates :user_id, uniqueness: { scope: :order_id, message: "only one meal per user in order"}
+  validates :user_id, uniqueness: { scope: :order_id, message: 'only one meal per user in order' }
 end

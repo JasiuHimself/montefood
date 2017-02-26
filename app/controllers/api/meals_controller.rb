@@ -10,10 +10,10 @@ class Api::MealsController < ApplicationController
       if meal.save
         render json: meal
       else
-        flash[:notice] = "Saving meal failed!"
+        flash[:error] = 'Saving meal failed!'
       end
     else
-      flash[:notice] = "The meal record is invalid!"
+      flash[:error] = 'The meal record is invalid!'
     end
   end
 end

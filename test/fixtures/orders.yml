@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  restaurant_name: MyString
-  status: MyString
+nynek:
+  id: 1
+  restaurant_name: nynek
+  status: ordered
 
-two:
-  restaurant_name: MyString
-  status: MyString
+piec:
+  id: 2
+  restaurant_name: piec na szewskiej
+  status: ordered
