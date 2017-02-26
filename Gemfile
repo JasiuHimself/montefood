@@ -55,3 +55,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'omniauth-github', github: 'intridea/omniauth-github'
 gem 'rubocop', '~> 0.47.1', require: false
 gem 'eslint-rails'
+group :development, :test do
+  gem 'rspec-rails', '~> 3.5'
+end
